@@ -1,0 +1,41 @@
+#!/bin/bash
+
+while getopts 'k:' OPTION; do
+  case "$OPTION" in
+    k)
+      kvalue="$OPTARG"
+      ;;
+    ?)
+      echo "script usage: $(basename ${0}) [-k keyword for filtering changed file in git status -s (file name, file path, dir)] [-t for filtering file ext]" >&2
+      exit 1
+      ;;
+  esac
+done
+shift "$(($OPTIND -1))"
+
+if test -z "$kvalue"
+  then
+    echo "Flag [k] cannot be empty"
+    echo "script usage: $(basename ${0}) [-k keyword for filtering changed file in git status -s (file name, file path, dir)]"
+    exit 1
+fi
+
+echo "File name Filter is ${kvalue}"
+
+gitStatus=$(git status --porcelain)
+if test -z "$gitStatus"
+  then 
+    exit 1
+fi
+
+filteredFile=$(echo "$gitStatus" | grep "$kvalue" | cut -c4-)
+
+if test -z "$filteredFile"
+  then
+    echo "Cannot Find File with Key $kvalue"
+    exit 0
+fi
+
+echo "exec git add $filteredFile"
+git add $filteredFile
+exit 0
