@@ -5,6 +5,7 @@
 int main(int argcount, char** argvalue) 
 {   
     Input* input_ptr = NULL;
+    int count = 0;
    
     for (int i = 1; i < argcount; i++) {
         char* key = argvalue[i]; // the flags
@@ -17,7 +18,8 @@ int main(int argcount, char** argvalue)
         char* val = argvalue[i+1]; // the value
 
         if (key_checker("-", key) || key_checker("--", key)) {
-            input_ptr = insert_input(input_ptr, key, val, i);    
+            count += 1;
+            input_ptr = insert_input(input_ptr, key, val, count);    
         }
          
     }
