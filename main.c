@@ -33,18 +33,19 @@ int main(int argcount, char *argvalue[]) {
     printf("before_reduce %d\n", input->size);
     for (int j = 0; j < input->size; j++) {
         printf("key: %s, value: %s\n", input[j].key, input[j].value);
+        // free(input[j].key);
+        // free(input[j].value);
+    }
+
+    input = reduce_input(input);
+
+    printf("input_size_after_reduce %d\n", input->size);
+    for (int j = 0; j < input->size; j++) {
+        printf("\nkey: %s, value: %s\n", input[j].key, input[j].value);
+        printf("\n");
         free(input[j].key);
         free(input[j].value);
     }
-
-    // input = reduce_input(input);
-
-    // printf("input_size_after_reduce %d\n", input->size);
-    // for (int j = 0; j < input->size; j++) {
-    //     printf("key: %s, value: %s\n", input[j].key, input[j].value);
-    //     free(input[j].key);
-    //     free(input[j].value);
-    // }
     
     free(input);
     
